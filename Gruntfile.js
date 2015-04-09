@@ -5,13 +5,11 @@ module.exports = function (grunt) {
     require('load-grunt-config')(grunt, {
         init: true,
         data: {
-            pkg: grunt.file.readJSON('package.json'),
-            src: 'src',             // 源码目录
-            dist: 'dist',           // 发布目录
-            dev: 'dev',             // 开发目录
-            host: '127.0.0.1',
-            port: 6060,
-            livereload: 35733
+            pkg  : grunt.file.readJSON('package.json'),
+            src  : 'src',  // 源码目录
+            dist : 'dist', // 发布目录
+            dev  : 'dev',  // 调试目录
+            bower: 'bower_components'
         }
     });
 

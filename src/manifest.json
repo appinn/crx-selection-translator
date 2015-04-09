@@ -35,6 +35,24 @@
     ]
   },
 
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*",
+        "file:///*"
+      ],
+      "css": [],
+      "js": [
+        "js/lib/jquery.js",
+        "js/kernel/storage.js",
+        "js/content.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_start"
+    }
+  ],
+
 
   "web_accessible_resources": [
 

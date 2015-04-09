@@ -1,0 +1,6 @@
+jquery-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= bower %>/jquery/dist/
+  src: '*'
+  dest: <%= dev %>/js/lib/

@@ -1,7 +1,7 @@
 {
   "name": "crx-selection-translate",
   "version": "0.0.1",
-  "description": "Chrome 的划词翻译扩展",
+  "description": "基于 Chrome 的划词翻译扩展",
   "main": "Gruntfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
