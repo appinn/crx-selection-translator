@@ -1,0 +1,10 @@
+options:
+  pretty: true
+  data:
+    root: ''
+files:
+  expand: true
+  cwd: <%= src %>
+  src: '*.jade'
+  dest: <%= dev %>
+  ext: '.html'

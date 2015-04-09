@@ -1,0 +1,28 @@
+{
+  "name": "crx-selection-translate",
+  "version": "0.0.1",
+  "description": "Chrome 的划词翻译扩展",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bubkoo/crx-selection-translate.git"
+  },
+  "author": "bubkoo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bubkoo/crx-selection-translate/issues"
+  },
+  "homepage": "https://github.com/bubkoo/crx-selection-translate",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-jade": "^0.14.1",
+    "grunt-contrib-less": "^1.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-config": "^0.16.0",
+    "time-grunt": "^1.1.0"
+  }
+}
