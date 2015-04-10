@@ -34,12 +34,13 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "css": [],
+      "css": [
+        "css/injected.css"
+      ],
       "js": [
         "js/lib/jquery.js",
         "js/kernel/persistent.js",
-        "js/content/Widget.js",
-        "js/content/main.js"
+        "js/content.js"
       ],
       "all_frames": true,
       "run_at": "document_start"
