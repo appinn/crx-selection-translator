@@ -1,0 +1,36 @@
+options:
+  livereload: false
+  spawn: false
+
+
+manifest:
+  files:
+    - <%= src %>/manifest.json
+  tasks:
+    - copy:manifest-dev
+
+
+images:
+  files:
+    - <%= src %>/images/**.*
+  tasks:
+    - copy:images-dev
+
+
+less:
+  files:
+    - <%= src %>/less/**/*.less
+  tasks:
+    - less
+
+jade:
+  files:
+    - <%= src %>/*.jade
+  tasks:
+    - jade
+
+js:
+  files:
+    - <%= src %>/js/**/*.js
+  tasks:
+    - copy:js-dev

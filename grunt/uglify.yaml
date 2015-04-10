@@ -1,0 +1,7 @@
+options:
+  report: min
+
+lib-dev:
+  files:
+    <%= dev %>/js/lib/jquery.js : <%= bower %>/jquery/dist/jquery.js
+    <%= dev %>/js/lib/require.js: <%= bower %>/requirejs/require.js

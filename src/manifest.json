@@ -4,57 +4,48 @@
   "version": "0.0.1",
   "description": "划词翻译",
   "author": "bubkoo(bubkoo@163.com)",
-
   "icons": {
-    "16" : "images/translate@16.png",
-    "48" : "images/translate@48.png",
-    "128": "images/translate@128.png"
+    "16": "images/translate-16x16.png",
+    "48": "images/translate-48x48.png",
+    "128": "images/translate-128x128.png"
   },
-
   "browser_action": {
-    "default_icon" : {
-      "19": "images/translate@19.png",
-      "38": "images/translate@38.png"
+    "default_icon": {
+      "19": "images/translate-19x19.png",
+      "38": "images/translate-19x19@2x.png"
     },
     "default_title": "划词翻译"
   },
-
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-
   "permissions": [
-    "*://*/*",
+    "http://*/*",
+    "https://*/*",
+    "<all_urls>",
     "contextMenus",
     "storage",
     "clipboardWrite",
     "clipboardRead",
     "activeTab"
   ],
-
   "background": {
     "scripts": [
     ]
   },
-
   "content_scripts": [
     {
-      "matches": [
-        "http://*/*",
-        "https://*/*",
-        "file:///*"
-      ],
+      "matches": ["*://*/*"],
       "css": [],
       "js": [
         "js/lib/jquery.js",
-        "js/kernel/storage.js",
-        "js/content.js"
+        "js/kernel/persistent.js",
+        "js/content/Widget.js",
+        "js/content/main.js"
       ],
       "all_frames": true,
       "run_at": "document_start"
     }
   ],
-
-
   "web_accessible_resources": [
-
+    "widget.html"
   ]
 }

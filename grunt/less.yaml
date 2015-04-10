@@ -1,0 +1,6 @@
+exp:
+  expand: true
+  cwd: <%= src %>/less
+  src: '*.less'
+  dest: <%= dev %>/css
+  ext: '.css'

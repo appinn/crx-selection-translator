@@ -2,7 +2,6 @@
 .DS_Store
 build
 dev
-report
 node_modules
 bower_components
 npm-debug.log

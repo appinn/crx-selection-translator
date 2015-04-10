@@ -1,6 +1,24 @@
-jquery-dev:
+manifest-dev:
+  files:
+    <%= dev %>/manifest.json: <%= src %>/manifest.json
+
+
+images-dev:
   expand: true
   filter: isFile
-  cwd: <%= bower %>/jquery/dist/
-  src: '*'
-  dest: <%= dev %>/js/lib/
+  cwd: <%= src %>/images/
+  src:
+    - '*'
+    - '**.*'
+  dest: <%= dev %>/images/
+
+
+js-dev:
+  expand: true
+  filter: isFile
+  cwd: <%= src %>/js/
+  src:
+    - '*.js'
+    - '**/*.js'
+  dest: <%= dev %>/js/
+

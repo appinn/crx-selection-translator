@@ -4,7 +4,7 @@
     if ('function' === typeof define && define.amd) {
         define([], factory);
     } else {
-        root.storage = factory();
+        root.persistent = factory();
     }
 
 }(window, function () {
@@ -14,7 +14,7 @@
     var changeCallbacks = [];
     var hasOwn = Object.prototype.hasOwnProperty;
 
-    var storage = {
+    var persistent = {
         /* *
          * 读取数据
          *
@@ -32,11 +32,7 @@
             return new Promise(function (resolve, reject) {
                 storageArea.get(keys, function (result) {
                     var error = chrome.runtime.lastError;
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(result);
-                    }
+                    error ? reject(error) : resolve(result);
                 });
             });
         },
@@ -54,11 +50,7 @@
             return new Promise(function (resolve, reject) {
                 storageArea.getBytesInUse(items, function (bytes) {
                     var error = chrome.runtime.lastError;
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(bytes);
-                    }
+                    error ? reject(error) : resolve(bytes);
                 });
             });
         },
@@ -84,12 +76,8 @@
 
             return new Promise(function (resolve, reject) {
                 storageArea.set(items, function () {
-                    var err = chrome.runtime.lastError;
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
+                    var error = chrome.runtime.lastError;
+                    error ? reject(error) : resolve();
                 });
             });
         },
@@ -104,12 +92,8 @@
         remove: function (keys) {
             return new Promise(function (resolve, reject) {
                 storageArea.remove(keys, function () {
-                    var err = chrome.runtime.lastError;
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
+                    var error = chrome.runtime.lastError;
+                    error ? reject(error) : resolve();
                 });
             });
         },
@@ -123,12 +107,8 @@
         clear: function () {
             return new Promise(function (resolve, reject) {
                 storageArea.clear(function () {
-                    var err = chrome.runtime.lastError;
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
+                    var error = chrome.runtime.lastError;
+                    error ? reject(error) : resolve();
                 });
             });
         },
@@ -212,5 +192,5 @@
         });
     });
 
-    return Object.freeze(storage);
+    return Object.freeze(persistent);
 }));
