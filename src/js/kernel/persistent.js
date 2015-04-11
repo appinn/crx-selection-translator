@@ -41,14 +41,13 @@
          * 获取一个数据或多个数据所占用的总空间
          *
          * @method getBytesInUse
-         * @param {Object} items `items` 的属性值如果是字符型、数字型和数组型，则储存
-         * 的格式不会改变，但如果是对象型和函数型的，会被储存为'{}'，如果是日期型和正则型，
-         * 会被储存为它们的字符串形式。
-         * @returns {Deferred} Promise 数据所占的字节
+         * @param {String/Array} keys 字符串或字符串数组，空数组将返回 `0`，
+         * `null` 将返回所占整个储存空间的大小
+         * @returns {Deferred} Promise 数据所占的字节数
          * */
-        getBytesInUse: function (items) {
+        getBytesInUse: function (keys) {
             return new Promise(function (resolve, reject) {
-                storageArea.getBytesInUse(items, function (bytes) {
+                storageArea.getBytesInUse(keys, function (bytes) {
                     var error = chrome.runtime.lastError;
                     error ? reject(error) : resolve(bytes);
                 });
@@ -86,7 +85,7 @@
          * 删除数据
          *
          * @method remove
-         * @param {Array/String} keys 字符串或多个字符串的数组
+         * @param {Array/String} keys 字符串或字符串数组
          * @returns {Deferred} Promise
          * */
         remove: function (keys) {
@@ -129,12 +128,8 @@
         /* *
          * 注册 change 事件
          * @method onChange
-         *   注意，回调里面的第一个参数仅包含最新值，
-         *   而不是一个有newValue和oldValue的对象。
-         *   见下面的事件监听函数
-         * @param {function} listener
-         * @param {object=} caseOf 关心哪些设置。
-         *            如果changes里面没有任何一个在 caseOf 对象里列出的 key ，就不会触发事件
+         * @param {Function} listener
+         * @param {Array} keys 关心哪些项，缺省时任何改变都将触发回调
          * @returns {persistence}
          * */
         onChange: function (listener, keys) {
@@ -153,7 +148,8 @@
                             continue;
                         }
                         meaningfulChanges = meaningfulChanges || {};
-                        meaningfulChanges[key] = changes[key];
+                        // 只将新值传递给回调
+                        meaningfulChanges[key] = changes[key].newValue;
                     }
 
                     if (meaningfulChanges) {
@@ -164,7 +160,6 @@
                 callback = listener;
             }
             changeCallbacks.push(callback);
-            return this;
         }
     };
 

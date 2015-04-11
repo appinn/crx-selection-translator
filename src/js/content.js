@@ -84,15 +84,36 @@
     $(document)
         .on('mousedown', function (e) {
             // 隐藏
-            console.log('mousedown');
         })
-        .on('mouseup', function (e) {
-            // 判断是否显示
-            console.log('mouseup');
+        .on('mouseup', onMouseUp);
 
-            widget || (widget = new Widget());
+    function onMouseUp(event) {
+        // 鼠标左键才触发翻译
+        if (event.button !== 0) {
+            return;
+        }
 
+        var selectedText = getSelectionText();
+
+        // 没有选中任何内容
+        if (!selectedText) {
+            return;
+        }
+
+        extension.sendMessage({
+            name: 'checkSelection',
+            data: {selectedText: selectedText}
         });
+
+        widget || (widget = new Widget());
+    }
+
+    //
+    // 选中区域后发消息给背景页面，获取 iframe 的大小（根据是否立即翻译），然后显示 iframe
+    // 点击翻译按钮后，iframe 发消息给背景页面，让背景页面开始翻译，背景页收到消息后，立即
+    // 发一条消息给 content，让 content 调整 iframe 的大小；完成翻译后，由背景页发消息给
+    // content 和 iframe，调整 iframe 大小，并显示翻译结果
+
 
     // Helpers
     // -------
@@ -102,5 +123,16 @@
         return getSelection().toString().trim();
     }
 
-
+    //chrome.extension.sendMessage("内容页面发送的消息", function (response) {
+    //    console.log(response);
+    //});
+    //
+    //chrome.extension.onMessage.addListener(
+    //    function (request, sender, sendResponse) {
+    //        console.log(request);
+    //        console.log(sender)
+    //        console.log(sender.tab ?
+    //        "from a content script:" + sender.tab.url :
+    //            "from the extension");
+    //    });
 })(jQuery);

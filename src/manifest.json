@@ -29,6 +29,8 @@
   ],
   "background": {
     "scripts": [
+      "js/background.js",
+      "/js/lib/require.js"
     ]
   },
   "content_scripts": [
@@ -39,7 +41,8 @@
       ],
       "js": [
         "js/lib/jquery.js",
-        "js/kernel/persistent.js",
+        "js/kernel/MessageHandler.js",
+        "js/kernel/extension.js",
         "js/content.js"
       ],
       "all_frames": true,
