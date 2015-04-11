@@ -1,91 +1,78 @@
-(function ($) {
-    //function getSelectionText() {
-    //    return getSelection().toString().trim();
-    //}
-    //
-    //var selectionTimer;
-    //var isMouseDown = false;
-    //
-    //$(document)
-    //    .on('selectionchange', function () {
-    //        if (selectionTimer) {
-    //            clearTimeout(selectionTimer);
-    //            selectionTimer = -1;
-    //        }
-    //
-    //        if (isMouseDown) {
-    //            return;
-    //        }
-    //
-    //        selectionTimer = setTimeout(function () {
-    //            console.log(isMouseDown);
-    //            if (!isMouseDown) {
-    //                $(window).trigger('selectionEnd');
-    //            }
-    //        }, 500);
-    //    })
-    //    .on('mousedown', function () {
-    //        isMouseDown = true;
-    //    })
-    //    .on('mouseup', function () {
-    //        isMouseDown = false;
-    //    });
-    //
-    //$(window).on('selectionEnd', function () {
-    //    selectionTimer = -1;
-    //    var selectedText = getSelectionText();
-    //
-    //    console.log(selectedText);
-    //});
+(function () {
+    'use strict';
 
-    function Widget(settings) {
-        var _this = this;
-        var iframe = document.createElement('iframe');
-        iframe.id = 'selectionTranslateWidget';
-
-        //iframe.addEventListener("load", function () {
-        //    Browser.sendToExtension(
-        //        {
-        //            name: "bounce",
-        //            message: {
-        //                name: "gt_setKeyboardHandlers",
-        //                handlers: p,
-        //                enabled: l
-        //            }
-        //        });
-        //    v++;
-        //    0 < s.length && 2 === v && (toggleCoordinator(s[0], s[1], s[2]), s = []);
-        //    window.focus()
-        //});
-
-        iframe.src = chrome.runtime.getURL('widget.html');
-        document.documentElement.appendChild(iframe);
-    }
-
-    $.extend(Widget.prototype, {
-
-        show: function () {
-
-        },
-
-        hide: function () {
-
-        },
-
-        destroy: function () {
-
+    var widget = new Widget();
+    var handlers = {
+        showWidget: function (data) {
+            console.log(data);
+            var size = data.size;
+            widget.show(size);
         }
-    });
+    };
+
+    var messageSender = {
+        checkSelection: function (selectedText) {
+            extension.sendMessage({
+                name: 'checkSelection',
+                data: {selectedText: selectedText}
+            });
+        }
+    };
+
+    // Widget
+    // ------
+
+    function Widget() {}
+
+    Widget.prototype.getIframe = function () {
+        var that = this;
+        var iframe = that.iframe;
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.id = 'selectionTranslateWidget';
+            iframe.src = chrome.runtime.getURL('widget.html');
+            that.iframe = iframe;
+        }
+        return iframe;
+    };
+
+    Widget.prototype.show = function (size) {
+        var that = this;
+        var iframe = that.getIframe();
+        iframe.style.left = that.left + 'px';
+        iframe.style.top = that.top + 'px';
+        if (size) {
+            iframe.style.width = (size.width || 0) + 'px';
+            iframe.style.height = (size.height || 0) + 'px';
+        }
+        document.documentElement.appendChild(iframe);
+
+        return that;
+    };
+
+    Widget.prototype.hide = function () {
+        var that = this;
+        var iframe = that.getIframe();
+        if (iframe) {
+            var parent = iframe.parentNode;
+            // 占时从 DOM 中移除，避免对页面的影响
+            parent && parent.removeChild(iframe);
+            iframe.removeAttribute('style');
+        }
+        return that;
+    };
+
+    Widget.prototype.position = function (pageX, pageY) {
+        var that = this;
+        that.left = pageX + 50 - window.pageXOffset;
+        that.top = pageY + 50 - window.pageYOffset;
+        return that;
+    };
 
     // Setup
     // ------
-
-    var widget;
-    $(document)
-        .on('mousedown', function (e) {
-            // 隐藏
-        })
-        .on('mouseup', onMouseUp);
+    document.addEventListener('mouseup', onMouseUp, false);
+    document.addEventListener('mousedown', onMouseDown, false);
 
     function onMouseUp(event) {
         // 鼠标左键才触发翻译
@@ -94,18 +81,16 @@
         }
 
         var selectedText = getSelectionText();
-
-        // 没有选中任何内容
         if (!selectedText) {
             return;
         }
 
-        extension.sendMessage({
-            name: 'checkSelection',
-            data: {selectedText: selectedText}
-        });
+        widget.position(event.pageX, event.pageY);
+        messageSender.checkSelection(selectedText);
+    }
 
-        widget || (widget = new Widget());
+    function onMouseDown() {
+        widget.hide();
     }
 
     //
@@ -113,6 +98,19 @@
     // 点击翻译按钮后，iframe 发消息给背景页面，让背景页面开始翻译，背景页收到消息后，立即
     // 发一条消息给 content，让 content 调整 iframe 的大小；完成翻译后，由背景页发消息给
     // content 和 iframe，调整 iframe 大小，并显示翻译结果
+
+
+    // 消息处理
+    // --------
+    var messageHandler = new MessageHandler()
+        .addMessageHandler(handlers, handlers);
+    // 处理来自背景页的消息
+    chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
+        if (!sender || sender.tab || sender.id !== extension.id) {
+            return;
+        }
+        messageHandler.triggerMessage(message, sender, sendResponse);
+    });
 
 
     // Helpers
@@ -123,16 +121,4 @@
         return getSelection().toString().trim();
     }
 
-    //chrome.extension.sendMessage("内容页面发送的消息", function (response) {
-    //    console.log(response);
-    //});
-    //
-    //chrome.extension.onMessage.addListener(
-    //    function (request, sender, sendResponse) {
-    //        console.log(request);
-    //        console.log(sender)
-    //        console.log(sender.tab ?
-    //        "from a content script:" + sender.tab.url :
-    //            "from the extension");
-    //    });
-})(jQuery);
+})();

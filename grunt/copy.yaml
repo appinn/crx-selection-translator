@@ -1,7 +1,10 @@
+common-dev:
+  files:
+    <%= dev %>/js/lib/handlebars.runtime.amd.js: <%= bower %>/handlebars/handlebars.runtime.amd.js
+
 manifest-dev:
   files:
     <%= dev %>/manifest.json: <%= src %>/manifest.json
-
 
 images-dev:
   expand: true

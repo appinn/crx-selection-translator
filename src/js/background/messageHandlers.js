@@ -1,11 +1,13 @@
 define([
     'common/storedSettings',
     'kernel/MessageHandler',
-    'kernel/tabs'
+    'kernel/tabs',
+    'background/iframeSize'
 ], function (
     storedSettings,
     MessageHandler,
-    tabs
+    tabs,
+    iframeSize
 ) {
 
     var handlers = {
@@ -17,7 +19,8 @@ define([
             tabs.sendMessage(sender.tab.id, {
                 name: 'showWidget',
                 data: {
-                    showButton: storedSettings.showButton
+                    showButton: storedSettings.showButton,
+                    size: storedSettings.showButton ? iframeSize.button : iframeSize.loading
                 }
             });
         }

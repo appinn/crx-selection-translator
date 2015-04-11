@@ -1,11 +1,13 @@
 dev:
   - clean:dev
   - uglify:lib-dev
+  - copy:common-dev
   - copy:manifest-dev
   - copy:images-dev
   - copy:js-dev
-  - jade
+  - handlebars
   - less
+  - jade
   - watch
 
 release:

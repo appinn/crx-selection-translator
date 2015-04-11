@@ -1,0 +1,9 @@
+options:
+  namespace: false
+  amd: true
+files:
+  expand: true
+  cwd: <%= src %>/template
+  src: '*.hbs'
+  dest: <%= dev %>/js/template
+  ext: '.js'

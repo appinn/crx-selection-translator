@@ -71,13 +71,5 @@
         }
     };
 
-    // 这里只处理来自插件的消息
-    //chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
-    //    if (!sender || sender.tab || sender.id !== extension.id) {
-    //        return;
-    //    }
-    //    extension.triggerMessage(message, sender, sendResponse);
-    //});
-
     return Object.freeze(extension);
 }));

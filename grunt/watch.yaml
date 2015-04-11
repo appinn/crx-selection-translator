@@ -23,6 +23,12 @@ less:
   tasks:
     - less
 
+handlebars:
+  files:
+    - <%= src %>/template/**/*.hbs
+  tasks:
+    - handlebars
+
 jade:
   files:
     - <%= src %>/*.jade
