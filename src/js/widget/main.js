@@ -1,8 +1,9 @@
 window.require = {
     baseUrl: 'js',
     paths: {
-        jquery: 'lib/jquery',
-        handlebars: 'lib/handlebars.runtime.amd.js'
+        'jquery': 'lib/jquery',
+        'handlebars.runtime': 'lib/handlebars.runtime.amd.min',
+        'handlebars': 'common/handlebars.runtime'
     },
-    deps: []
+    deps: ['widget/messageHandler']
 };

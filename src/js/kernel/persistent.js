@@ -19,7 +19,7 @@
          * 读取数据
          *
          * @method get
-         * @param {Mixed} keys `keys` 可以是字符串、包含多个字符串的数组或对象。如果
+         * @param {Array/String/Object} keys 字符串、包含多个字符串数组或对象。如果
          * `keys` 是字符串，则和 localStorage` 的用法类似；如果是数组，则相当于一次读
          * 取了多个数据；如果 `keys` 是对象，则会先读取以这个对象属性名为键值的数据，如果
          * 这个数据不存在则返回 `keys` 对象的属性值（比如 `keys` 为 `{'name':'Billy'}`，

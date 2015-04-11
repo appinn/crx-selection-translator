@@ -1,6 +1,7 @@
 // chrome.extension
 // -----------------
 // ref:
+//   - https://developer.chrome.com/extensions/extension
 //   - http://chrome.liuyixi.com/extension.html
 
 (function (root, factory) {
@@ -16,8 +17,6 @@
     'use strict';
 
     var extension = {
-        // 扩展或应用的 ID
-        id: chrome.runtime.id,
         // 扩展或应用的完整根路径
         baseURI: chrome.extension.getURL(''),
 
@@ -39,35 +38,59 @@
         },
 
         /* *
-         * 向扩展或应用发送消息
+         * 获取运行在当前扩展或应用中页面的 window 对象
          *
-         * @method sendMessage
-         * @param {String} extensionId 扩展或应用中的 ID，省略时表示发送给自己
-         * @param {Any} message 消息内容
-         * @returns {Promise}
+         * @method getViews
+         * @param {Object} (optional) fetchProperties
+         * @returns {Window} window 对象
          * */
-        sendMessage: function (extensionId, message) {
-            var argsCount = arguments.length;
-            if (!argsCount) {
-                return;
-            }
+        getViews: function (fetchProperties) {
+            return chrome.extension.getViews(fetchProperties);
+        },
 
-            var hasExtensionId = argsCount === 2;
+        /* *
+         * 获取扩展或应用 backgroundPage 的 window 对象
+         *
+         * @method getBackgroundPage
+         * */
+        getBackgroundPage: function () {
+            return chrome.extension.getBackgroundPage();
+        },
 
-            if (argsCount === 1) {
-                message = extensionId;
-            }
-
-            return new Promise(function (resolve, reject) {
-                function cb(response) {
-                    var error = chrome.extension.lastError;
-                    error ? reject(error) : resolve(response);
-                }
-
-                hasExtensionId
-                    ? chrome.extension.sendMessage(extensionId, message, cb)
-                    : chrome.extension.sendMessage(message, cb);
+        /* *
+         * 获取扩展或应用是否可以在隐身模式下启用，这取决于用于在浏览器中的设置
+         *
+         * @method isAllowedIncognitoAccess
+         * */
+        isAllowedIncognitoAccess: function () {
+            return new Promise(function (resolve) {
+                chrome.extension.isAllowedIncognitoAccess(function (isAllowedAccess) {
+                    resolve(isAllowedAccess);
+                });
             });
+        },
+
+        /* *
+         * 获取扩展或应用是否可以访问文件网址，这取决于用于在浏览器中的设置
+         *
+         * @method isAllowedIncognitoAccess
+         * */
+        isAllowedFileSchemeAccess: function () {
+            return new Promise(function (resolve) {
+                chrome.extension.isAllowedFileSchemeAccess(function (isAllowedAccess) {
+                    resolve(isAllowedAccess);
+                });
+            });
+        },
+
+        /* *
+         * 设置扩展或应用的更新路径，托管在 Chrome 应用中心的扩展或应用将忽略方法
+         *
+         * @method setUpdateUrlData
+         * @param {String} data 扩展或应用中的更新路径
+         * */
+        setUpdateUrlData: function (data) {
+            chrome.extension.setUpdateUrlData(data);
         }
     };
 

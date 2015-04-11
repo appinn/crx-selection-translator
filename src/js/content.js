@@ -4,6 +4,7 @@
     var widget = new Widget();
     var handlers = {
         showWidget: function (data) {
+            console.log('content')
             console.log(data);
             var size = data.size;
             widget.show(size);
@@ -87,6 +88,7 @@
 
         widget.position(event.pageX, event.pageY);
         messageSender.checkSelection(selectedText);
+        widget.show();
     }
 
     function onMouseDown() {
@@ -105,11 +107,15 @@
     var messageHandler = new MessageHandler()
         .addMessageHandler(handlers, handlers);
     // 处理来自背景页的消息
-    chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
-        if (!sender || sender.tab || sender.id !== extension.id) {
-            return;
-        }
-        messageHandler.triggerMessage(message, sender, sendResponse);
+    //chrome.extension.onMessage.addListener(function (message, sender, sendResponse) {
+    //    if (!sender || sender.tab || sender.id !== extension.id) {
+    //        return;
+    //    }
+    //    messageHandler.triggerMessage(message, sender, sendResponse);
+    //});
+
+    chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+        console.log('content received:' + message);
     });
 
 

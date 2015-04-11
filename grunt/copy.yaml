@@ -1,6 +1,6 @@
 common-dev:
   files:
-    <%= dev %>/js/lib/handlebars.runtime.amd.js: <%= bower %>/handlebars/handlebars.runtime.amd.js
+    <%= dev %>/js/lib/handlebars.runtime.amd.min.js: <%= bower %>/handlebars/handlebars.runtime.amd.min.js
 
 manifest-dev:
   files:
