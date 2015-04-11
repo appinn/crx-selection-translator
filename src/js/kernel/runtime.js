@@ -169,6 +169,40 @@
                     resolve(directoryEntry);
                 });
             });
+        },
+
+        // 以下方法非原生方法
+        // ------
+        _addMessageListener: function (messageHandler, isFromTab) {
+            if (!messageHandler || !messageHandler.triggerMessage) {
+                return;
+            }
+
+            var extensionId = this.id;
+
+            chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+                // 这里只接受来自本插件的消息，其他消息将忽略
+                if (!sender || sender.id !== extensionId) {
+                    return;
+                }
+
+                if ((isFromTab === true && !sender.tab) || (isFromTab === false && sender.tab)) {
+                    return;
+                }
+
+                messageHandler.triggerMessage(message, sender, sendResponse);
+            });
+
+
+        },
+
+        addExtensionMessageListener: function (messageHandler) {
+            this._addMessageListener(messageHandler, false)
+        },
+
+        // 添加 tab 发送的消息的监听
+        addTabMessageListener: function (messageHandler) {
+            this._addMessageListener(messageHandler, true)
         }
     };
 

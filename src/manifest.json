@@ -40,9 +40,12 @@
         "css/injected.css"
       ],
       "js": [
-        "js/lib/jquery.js",
+        "js/kernel/runtime.js",
         "js/kernel/MessageHandler.js",
-        "js/kernel/extension.js",
+        "js/kernel/MessageSender.js",
+        "js/content/Widget.js",
+        "js/content/messageHandler.js",
+        "js/content/messageSender.js",
         "js/content.js"
       ],
       "all_frames": true,

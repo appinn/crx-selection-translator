@@ -10,7 +10,9 @@
 }(window, function () {
     'use strict';
 
-    function MessageHandler() {}
+    function MessageHandler(eventNames, callback, context) {
+        this.addMessageHandler(eventNames, callback, context);
+    }
 
     MessageHandler.prototype.addMessageHandler = function (eventNames, callback, context) {
         var that = this;

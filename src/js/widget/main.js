@@ -3,7 +3,11 @@ window.require = {
     paths: {
         'jquery': 'lib/jquery',
         'handlebars.runtime': 'lib/handlebars.runtime.amd.min',
+        // handlebars 运行时
         'handlebars': 'common/handlebars.runtime'
     },
-    deps: ['widget/messageHandler']
+    deps: [
+        'widget/setup',
+        'widget/messageHandler'
+    ]
 };
