@@ -2,6 +2,7 @@
 .wrap .shadow,
 .wrap .shadow .inner {
   height: 100%;
+  overflow: hidden;
 }
 
 .wrap .shadow,
@@ -21,6 +22,16 @@
       border: 1px solid #FBFAFB;
       background: rgba(245, 245, 245, .95);
       background: -webkit-gradient(linear, left top, left bottom, from(rgba(250, 250, 250, .95)), to(rgba(235, 235, 235, .95)));
+
+      .inside {
+        height: 190px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 0 20px;
+        -webkit-user-select: none;
+        user-select: none;
+      }
     }
   }
 }
+

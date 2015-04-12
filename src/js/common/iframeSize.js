@@ -11,7 +11,7 @@ define([], function () {
         },
         result: {
             width: 380,
-            height: 280
+            height: 290
         }
     };
 });

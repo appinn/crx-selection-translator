@@ -14,6 +14,9 @@ define([
     translator
 ) {
 
+    translator.translate({text: 'since'});
+    translator.translate({text: 'Since content scripts run in the context of a web page and not the extension, they often need some way of communicating with the rest of the extension.'});
+
     var selectedText;
 
     var handlers = {

@@ -1,7 +1,14 @@
+// 百度翻译引擎
+// -----------------
+// ref:
+//   - http://developer.baidu.com/wiki/index.php?title=%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3%E9%A6%96%E9%A1%B5/%E7%99%BE%E5%BA%A6%E7%BF%BB%E8%AF%91/%E7%BF%BB%E8%AF%91API
+
 define([
-    'jquery'
+    'jquery',
+    'engine/commonErrors'
 ], function (
-    $
+    $,
+    commonErrors
 ) {
     'use strict';
 
@@ -42,62 +49,25 @@ define([
         auto: 'auto'
     };
 
-    var ERRORS = {
+    var ERRORS = $.extend({
         // 系统错误码
         52001: '查询超时，请调整文本字符长度。',
         52002: '翻译系统错误。',
         52003: '未授权的用户。',
-        5004: 'from 或 to 或query 三个必填参数，请检查是否相关参数未填写完整。',
+        5004: 'from 或 to 或query 三个必填参数，请检查是否相关参数未填写完整。'
+    }, commonErrors);
 
-        // 自定义错误信息
-        90001: '查询超时，请稍后重试。',
-        90002: '网络错误，请检查您的网络设置，然后重试。',
-        90003: '翻译服务器返回了错误的数据，请稍后重试。'
-    };
-
-    function standardize(response, query) {
-        var ret = {};
-
-        //如果有错误码则直接处理错误
-        if (response.error_code) {
-            ret.error = ERRORS[response.error_code];
-        } else {
-            ret.to = response.to;
-            ret.from = response.from;
-            ret.response = response;
-            ret.resultURI = config.resultURI
-                .replace('{{query}}', query.text)
-                .replace('{{to}}', response.to);
-
-            var resultArr = response.trans_result;
-
-            if (Array.isArray(resultArr)) {
-                /*
-                 * 翻译结果在 trans_result 数组中，每个数组元素都是一个对象
-                 * 每个对象包含属性 src（段落的查询文本）和 dst（对应段落的翻译结果）
-                 * 有多少个段落，就会有多少个数组元素
-                 * 使用 \n 把它们拼起来
-                 */
-                ret.result = resultArr.map(function (item) {
-                    return item.dst;
-                }).join('\n');
-            } else {
-                ret.result = ERRORS['90003'];
-            }
-        }
-
-        return ret;
-    }
-
-    return Object.freeze({
+    var engine = {
         id: 'baidu',
         name: '百度翻译',
         url: 'http://fanyi.baidu.com/',
 
         translate: function (query) {
+            var queryText = query.text;
             var data = $.extend({}, config.data);
-            data.q = query.text;
-            data.to = LANGUAGES[query.to] || 'auto';
+
+            data.q = queryText;
+            data.to = LANGUAGES[query.to] || LANGUAGES['auto'];
 
             return $.ajax({
                 url: config.url,
@@ -110,25 +80,48 @@ define([
                 // 如果服务器返回的不是 JSON 格式数据
                 // 比如长城宽带会修改返回的内容插入广告
                 if ('string' === typeof response) {
-                    result = {error: ERRORS['90003']};
+                    result = {error: ERRORS.FORMAT};
                 } else {
-                    result = standardize(response, query);
+                    result = response.error_code ? // 翻译引擎错误
+                    {error: ERRORS[response.error_code]} :
+                        !Array.isArray(response.trans_result) ? // 返回格式错误
+                        {error: ERRORS.FORMAT} : {
+                            to: response.to,
+                            from: response.from,
+                            data: response.trans_result
+                        };
                 }
 
-                result.response = response;
                 return result;
             }, function (jqXHR, textStatus) {
-                var message;
-                if ('timeout' === textStatus) {
-                    message = ERRORS['90001'];
-                } else if ('error' === textStatus) {
-                    message = ERRORS['90002'];
-                }
+                var error = 'timeout' === textStatus
+                    ? ERRORS.TIMEOUT : 'error' === textStatus
+                    ? ERRORS.NETWORK
+                    : ERRORS.UNKNOWN;
 
                 return {
-                    error: message
+                    error: error
                 };
+            }).then(function (result) {
+                // 翻译引擎
+                result.engineId = engine.id;
+                result.engineName = engine.name;
+
+                // 要翻译的文本
+                result.query = queryText;
+
+                // 结果页
+                result.resultURI = config.resultURI
+                    .replace('{{query}}', queryText)
+                    .replace('{{to}}', result.to);
+
+                return result;
             });
         }
-    });
+    };
+
+
+    // Exports
+    // -------
+    return Object.freeze(engine);
 });

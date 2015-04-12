@@ -22,8 +22,8 @@ define([
             $(document.body).html(loadingTemplate());
         },
 
-        renderResult: function (result) {
-            $(document.body).html(youdaoResult());
+        renderResult: function (data) {
+            $(document.body).html(youdaoResult(data.result));
         }
     };
 });

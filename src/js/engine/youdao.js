@@ -1,4 +1,4 @@
-// 有道翻译 API
+// 有道翻译引擎
 // -----------------
 // ref:
 //   - http://fanyi.youdao.com/openapi?path=data-mode
@@ -79,17 +79,16 @@ define([
                 };
             }).then(function (result) {
                 // 翻译引擎
-                result.engine = engine.id;
+                result.engineId = engine.id;
+                result.engineName = engine.name;
 
                 // 要翻译的文本
-                result.query = query.text;
+                result.query = queryText;
                 result.from = query.from;
                 result.to = query.to;
 
                 // 结果页
                 result.resultURI = config.resultURI.replace('{{query}}', queryText);
-
-                console.log(result);
 
                 return result;
             });
