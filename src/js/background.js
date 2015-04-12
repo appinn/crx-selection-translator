@@ -3,7 +3,10 @@ window.require = {
     paths: {
         jquery: 'lib/jquery'
     },
-    deps: ['background/messageHandler']
+    deps: [
+        'background/onInstalled',
+        'background/messageHandler'
+    ]
 };
 
 // 开发者调试时可以看到该信息

@@ -7,6 +7,7 @@ define([
 
     return new MessageSender([
         'showWidget',
-        'showLoading'
+        'showLoading',
+        'showResult'
     ], true);
 });

@@ -11,6 +11,12 @@
             data = data || {};
             var widget = root.widget;
             widget.adjust(data.size, data.pos);
+        },
+        showResult: function (data) {
+            console.log(data);
+            data = data || {};
+            var widget = root.widget;
+            widget.adjust(data.size, data.pos);
         }
     };
 

@@ -32,28 +32,44 @@ define([
             // 缓存选中的文本
             selectedText = data.selectedText;
 
-            var showButton = storedSettings.showButton;
+            var tabId = sender.tab.id;
+            var autoTranslate = storedSettings.autoTranslate;
 
-            messageSender.showWidget(sender.tab.id, {
-                showButton: showButton,
-                size: storedSettings.showButton ? iframeSize.button : iframeSize.loading
+            messageSender.showWidget(tabId, {
+                autoTranslate: autoTranslate,
+                size: autoTranslate ? iframeSize.loading : iframeSize.button
             });
 
             // 不显示翻译按钮时，直接开始翻译
-            if (!showButton) {
-                translator.translate(selectedText);
-            }
+            autoTranslate && translate(selectedText, tabId);
         },
 
         // 点击翻译按钮后，显示 loading 并开始翻译
         showLoading: function (data, sender) {
-            translator.translate(selectedText);
-            messageSender.showLoading(sender.tab.id, {
+            var tabId = sender.tab.id;
+            messageSender.showLoading(tabId, {
                 size: iframeSize.loading
             });
+            translate(selectedText, tabId);
         }
     };
 
+    // Helpers
+    // -------
+
+    function translate(text, targetTabId) {
+        // 如果翻译引擎设置错误将返回 false
+        var deferred = translator.translate({text: text});
+        deferred ? deferred.then(function (result) {
+            messageSender.showResult(targetTabId, {
+                result: result,
+                size: iframeSize.result
+            })
+        }) : messageSender.showResult(targetTabId, {
+            result: {error: '未知的翻译引擎'},
+            size: iframeSize.result
+        });
+    }
 
     // 消息处理
     // --------

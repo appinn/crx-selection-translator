@@ -8,6 +8,10 @@ define([], function () {
         loading: {
             width: 40,
             height: 10
+        },
+        result: {
+            width: 380,
+            height: 280
         }
     };
 });

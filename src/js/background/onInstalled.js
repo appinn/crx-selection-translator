@@ -1,12 +1,13 @@
 define([
     'kernel/persistent',
-    'options/defaultSettings'
+    'common/defaultSettings'
 ], function (
     persistent,
     defaultSettings
 ) {
-
+    persistent.clear();
     persistent.set(defaultSettings);
+    persistent._print();
 
     chrome.runtime.onInstalled.addListener(function (details) {
         'use strict';
@@ -23,7 +24,5 @@ define([
         if (isInstall) {
             chrome.tabs.create({url: '/options.html'});
         }
-
-        persistent._print();
     });
 });

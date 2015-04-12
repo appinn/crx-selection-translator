@@ -11,12 +11,15 @@ define([
     var handlers = {
         // 显示翻译按钮或 loading 标志
         showWidget: function (data) {
-            data.showButton
-                ? render.renderButton()
-                : render.renderLoading();
+            data.autoTranslate
+                ? render.renderLoading()
+                : render.renderButton();
         },
         showLoading: function () {
             render.renderLoading();
+        },
+        showResult: function (data) {
+            render.renderResult(data);
         }
     };
 
