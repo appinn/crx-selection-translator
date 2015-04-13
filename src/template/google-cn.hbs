@@ -1,0 +1,55 @@
+<div id="googleCNWrap">
+
+    <div class="engine-name">
+        <div class="sprite-line">
+            <em></em>
+        </div>
+        <a href="{{resultURI}}" target="_blank">{{engineName}}</a>
+
+        <div class="sprite-line">
+            <em></em>
+        </div>
+    </div>
+
+    {{#with data}}
+
+        {{#if dict}} {{! 翻译单词 }}
+
+            <table class="google-tbl-dict">
+                <tbody>
+                {{#each dict}}
+                    <tr>
+                        <td colspan="2">
+                            <div class="google-dict-pos">
+                                {{this.pos}}
+                            </div>
+                        </td>
+                    </tr>
+                    {{#each this.entry}}
+                        <tr>
+                            <td>
+                                <div class="google-dict-word">
+                                    {{this.word}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="google-dict-translation">
+                                    {{join this.reverse_translation ', '}}
+                                </div>
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{/each}}
+                </tbody>
+            </table>
+
+        {{else}} {{! 翻译句子 }}
+
+            <section>
+                {{joinObjects sentences 'trans' ''}}
+            </section>
+
+        {{/if}}
+
+    {{/with}}
+</div>

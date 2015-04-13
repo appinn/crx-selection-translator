@@ -20,7 +20,7 @@ define([
     var engineTemplates = {
         'youdao': youdaoTemplate,
         'baidu': baiduTemplate,
-        'google': googleCNTemplate
+        'googleCN': googleCNTemplate
     };
 
 

@@ -115,8 +115,6 @@ define([
                     .replace('{{query}}', queryText)
                     .replace('{{to}}', result.to);
 
-                console.log(result);
-
                 return result;
             });
         }

@@ -46,8 +46,8 @@ Widget.prototype.adjust = function (size, pos) {
 
     // TODO: 判断显示位置，不能超出浏览器的科室范围
     if (pos) {
-        iframe.style.left = pos.left + 30 + 'px';
-        iframe.style.top = pos.top + 30 + 'px';
+        iframe.style.left = pos.left + 10 + 'px';
+        iframe.style.top = pos.top + 10 + 'px';
     }
 
     return that;

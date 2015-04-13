@@ -28,8 +28,8 @@ define([
         },
 
         showOtherResult: function (data) {
+            // console.log(data);
             render.renderResult(data);
-            console.log(data);
         }
     };
 

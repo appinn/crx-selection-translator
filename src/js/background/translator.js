@@ -11,7 +11,7 @@ define([
 
     var engines = {};
     Array.prototype.slice.call(arguments, 1).forEach(function (engine) {
-        engines[engine.id] = engine;
+        engine && engine.id && (engines[engine.id] = engine);
     });
 
 
