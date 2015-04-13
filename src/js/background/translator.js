@@ -16,20 +16,34 @@ define([
 
 
     var hasOwn = Object.prototype.hasOwnProperty;
-
-    return Object.freeze({
-
+    var translator = {
         translate: function (query) {
-            var engine = query.engine || storedSettings.defaultEngine;
+            var engineId = query.engineId || storedSettings.defaultEngine;
 
             // for test
-            engine = 'baidu';
+            // engine = 'baidu';
 
             if (!hasOwn.call(query, 'to')) {
                 query.to = storedSettings.defaultTo;
             }
 
-            return hasOwn.call(engines, engine) && engines[engine].translate(query);
+            var engine = hasOwn.call(engines, engineId) && engines[engineId];
+
+            return engine && engine.translate && engine.translate(query);
+        },
+
+        translateWithOtherEngines: function (query) {
+            var engineId = query.engineId || storedSettings.defaultEngine;
+            var result = [];
+            for (var key in engines) {
+                if (hasOwn.call(engines, key) && key !== engineId) {
+                    var data = $.extend({}, query);
+                    data.engineId = key;
+                    result.push(translator.translate(data))
+                }
+            }
+            return result;
         }
-    });
+    };
+    return Object.freeze(translator);
 });

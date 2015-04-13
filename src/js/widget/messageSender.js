@@ -6,6 +6,7 @@ define([
     'use strict';
 
     return new MessageSender([
-        'showLoading'
+        'showLoading',
+        'translateWithOtherEngines'
     ]);
 });

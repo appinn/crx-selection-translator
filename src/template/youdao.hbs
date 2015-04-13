@@ -1,0 +1,73 @@
+<div id="youdaoWrap">
+
+    <div class="engine-name">
+        <div class="sprite-line">
+            <em></em>
+        </div>
+        <a href="{{resultURI}}" target="_blank">{{engineName}}</a>
+
+        <div class="sprite-line">
+            <em></em>
+        </div>
+    </div>
+
+    {{#with data}}
+    {{!-- 如果 data 中包含 basic 项，说明翻译的是一个单词，否则是一个句子 --}}
+        {{#if basic}}
+
+            <header class="details-header">
+                <span class="source-word">{{query}}</span>
+                {{#if basic.uk-phonetic}}
+                    <span class="phonetic-letter">
+                                    [英] [{{basic.uk-phonetic}}]
+                    </span>
+                    <span class="btn-phonetic"></span>
+                {{/if}}
+                {{#if basic.us-phonetic}}
+                    <span class="phonetic-letter">
+                                    [美] [{{basic.us-phonetic}}]
+                    </span>
+                    <span class="btn-phonetic"></span>
+                {{/if}}
+                {{!--
+               {{#if basic.phonetic}}
+                   <span class="phonetic-letter">
+                       [{{basic.phonetic}}]
+                   </span>
+               {{/if}}
+               --}}
+            </header>
+
+            <section class="youdao-sec">
+                <div class="youdao-sec-header">- 基本释义</div>
+                {{#each basic.explains}}
+                    <p>
+                        {{this}}
+                    </p>
+                {{/each}}
+            </section>
+
+            {{! 网络释义}}
+            {{#if web}}
+                <section class="youdao-sec">
+                    <div class="youdao-sec-header">- 网络释义</div>
+                    {{#each web}}
+                        <p>
+                            {{this.key}} {{this.value}}
+                        </p>
+                    {{/each}}
+                </section>
+            {{/if}}
+
+        {{else}}
+
+            {{#each translation}}
+                <section class="result-paragraph">
+                    {{this}}
+                </section>
+            {{/each}}
+
+        {{/if}}
+    {{/with}}
+
+</div>

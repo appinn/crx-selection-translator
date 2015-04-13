@@ -1,11 +1,13 @@
 define([
     'kernel/MessageHandler',
     'kernel/runtime',
-    'widget/render'
+    'widget/render',
+    'widget/messageSender'
 ], function (
     MessageHandler,
     runtime,
-    render
+    render,
+    messageSender
 ) {
 
     var handlers = {
@@ -15,11 +17,19 @@ define([
                 ? render.renderLoading()
                 : render.renderButton();
         },
+
         showLoading: function () {
             render.renderLoading();
         },
+
         showResult: function (data) {
             render.renderResult(data);
+            messageSender.translateWithOtherEngines({engineId: data.result.engineId})
+        },
+
+        showOtherResult: function (data) {
+            render.renderResult(data);
+            console.log(data);
         }
     };
 

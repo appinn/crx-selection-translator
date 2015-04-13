@@ -14,8 +14,8 @@ define([
     translator
 ) {
 
-    translator.translate({text: 'since'});
-    translator.translate({text: 'Since content scripts run in the context of a web page and not the extension, they often need some way of communicating with the rest of the extension.'});
+    //translator.translate({text: 'since'});
+    //translator.translate({text: 'Since content scripts run in the context of a web page and not the extension, they often need some way of communicating with the rest of the extension.'});
 
     var selectedText;
 
@@ -54,12 +54,27 @@ define([
                 size: iframeSize.loading
             });
             translate(selectedText, tabId);
+        },
+
+        // 利用默认引擎之外的引擎翻译
+        translateWithOtherEngines: function (data, sender) {
+            var tabId = sender.tab.id;
+            data.text = data.text || selectedText;
+
+            translator.translateWithOtherEngines(data)
+                .forEach(function (deferred) {
+                    deferred && deferred.then(function (result) {
+                        messageSender.showOtherResult(tabId, {
+                            result: result
+                        })
+                    });
+                });
         }
     };
 
+
     // Helpers
     // -------
-
     function translate(text, targetTabId) {
         // 如果翻译引擎设置错误将返回 false
         var deferred = translator.translate({text: text});
@@ -73,6 +88,7 @@ define([
             size: iframeSize.result
         });
     }
+
 
     // 消息处理
     // --------

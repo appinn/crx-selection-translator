@@ -1,0 +1,19 @@
+<div id="baiduWrap">
+
+    <div class="engine-name">
+        <div class="sprite-line">
+            <em></em>
+        </div>
+        <a href="{{resultURI}}" target="_blank">{{engineName}}</a>
+
+        <div class="sprite-line">
+            <em></em>
+        </div>
+    </div>
+
+    {{#each data}}
+        <section class="result-paragraph">
+            {{this.dst}}
+        </section>
+    {{/each}}
+</div>
