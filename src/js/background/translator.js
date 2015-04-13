@@ -22,6 +22,9 @@ define([
         translate: function (query) {
             var engine = query.engine || storedSettings.defaultEngine;
 
+            // for test
+            engine = 'baidu';
+
             if (!hasOwn.call(query, 'to')) {
                 query.to = storedSettings.defaultTo;
             }
