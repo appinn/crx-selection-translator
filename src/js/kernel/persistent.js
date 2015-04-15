@@ -176,7 +176,7 @@
             if (!hasOwn.call(changes, key)) {
                 continue;
             }
-            customChanges[key] = changes[key];
+            customChanges[key] = changes[key].newValue;
         }
 
         // 防止对象在回调里被修改，因为这会导致其它回调也收到修改后的对象

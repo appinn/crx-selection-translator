@@ -1,6 +1,8 @@
 define([
     'kernel/runtime',
     'kernel/MessageHandler',
+    'kernel/browserAction',
+    'kernel/persistent',
     'common/storedSettings',
     'common/iframeSize',
     'background/messageSender',
@@ -8,6 +10,8 @@ define([
 ], function (
     runtime,
     MessageHandler,
+    browserAction,
+    persistent,
     storedSettings,
     iframeSize,
     messageSender,
@@ -72,25 +76,50 @@ define([
         }
     };
 
+    function onIconClicked() {
+        var enableSelection = storedSettings.enableSelection;
+        var title = enableSelection ? '划词翻译已禁用' : '划词翻译已启用';
+        var icon = enableSelection ? {
+            "19": "images/translate-gray-19x19.png",
+            "38": "images/translate-gray-19x19@2x.png"
+        } : {
+            "19": "images/translate-19x19.png",
+            "38": "images/translate-19x19@2x.png"
+        };
+        browserAction.setTitle(title);
+        browserAction.setIcon(icon);
+        persistent.set('enableSelection', !enableSelection);
+    }
+
 
     // Helpers
     // -------
     function translate(text, targetTabId) {
         // 如果翻译引擎设置错误将返回 false
         var deferred = translator.translate({text: text});
-        deferred ? deferred.then(function (result) {
-            messageSender.showResult(targetTabId, {
-                result: result,
-                size: iframeSize.result
-            })
-        }) : messageSender.showResult(targetTabId, {
-            result: {error: '未知的翻译引擎'},
+
+        var data = {
             size: iframeSize.result
-        });
+            //offset: {
+            //    left: -20,
+            //    top: -20
+            //}
+        };
+
+        if (deferred) {
+            deferred.then(function (result) {
+                data.result = result;
+                messageSender.showResult(targetTabId, data);
+            });
+        } else {
+            data.result = {error: '未知的翻译引擎'};
+            messageSender.showResult(targetTabId, data);
+        }
     }
 
 
     // 消息处理
     // --------
     runtime.addTabMessageListener(new MessageHandler(handlers, handlers));
+    chrome.browserAction.onClicked.addListener(onIconClicked);
 });

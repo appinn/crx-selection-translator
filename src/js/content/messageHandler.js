@@ -15,7 +15,7 @@
         showResult: function (data) {
             data = data || {};
             var widget = root.widget;
-            widget.adjust(data.size, data.pos);
+            widget.adjust(data.size, data.pos, data.offset);
         }
     };
 
