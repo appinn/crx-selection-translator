@@ -1,5 +1,5 @@
 {
-  "name": "crx-selection-translate",
+  "name": "crx-selection-translator",
   "version": "0.0.1",
   "description": "基于 Chrome 的划词翻译扩展",
   "main": "Gruntfile.js",

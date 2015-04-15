@@ -44,10 +44,38 @@ Widget.prototype.adjust = function (size, pos) {
         iframe.style.height = height + 'px';
     }
 
-    // TODO: 判断显示位置，不能超出浏览器的科室范围
+    var top, left;
     if (pos) {
-        iframe.style.left = pos.left + 10 + 'px';
-        iframe.style.top = pos.top + 10 + 'px';
+        left = pos.left;
+        top = pos.top;
+    } else {
+        left = parseInt(iframe.style.left);
+        top = parseInt(iframe.style.top);
+    }
+
+    pos = getPosition(left, top);
+    if (left !== pos.left || !iframe.style.left) {
+        iframe.style.left = pos.left + 'px';
+    }
+    if (top != pos.top || !iframe.style.top) {
+        iframe.style.top = pos.top + 'px';
+    }
+
+    function getPosition(left, top) {
+        var wWidth = window.innerWidth;
+        var wHeight = window.innerHeight;
+        var width = parseInt(iframe.style.width);
+        var height = parseInt(iframe.style.height);
+
+        left += 10;
+        top += 10;
+        left = left + width < wWidth ? left : wWidth - width;
+        top = top + height < wHeight ? top : wHeight - wHeight;
+
+        return {
+            left: left,
+            top: top
+        };
     }
 
     return that;

@@ -1,11 +1,9 @@
 window.require = {
     baseUrl: 'js',
     paths: {
-        jquery: 'lib/jquery',
-        fetch: 'lib/fetch'
+        jquery: 'lib/jquery'
     },
     deps: [
-        'fetch',
         'background/onInstalled',
         'background/messageHandler'
     ]
