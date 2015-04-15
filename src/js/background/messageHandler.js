@@ -24,7 +24,7 @@ define([
     var selectedText;
 
     var handlers = {
-        checkSelection: function (data, sender) {
+        checkSelectedText: function (data, sender) {
             if (!data || !data.selectedText || !storedSettings.enableSelection) {
                 return;
             }
@@ -49,6 +49,14 @@ define([
 
             // 不显示翻译按钮时，直接开始翻译
             autoTranslate && translate(selectedText, tabId);
+        },
+
+        checkEnabledSelection: function (data, sender) {
+            var tabId = sender.tab.id;
+            messageSender.feedbackSelectionEnabled(tabId, {
+                    enabled: storedSettings.enableSelection
+                }
+            );
         },
 
         // 点击翻译按钮后，显示 loading 并开始翻译
@@ -89,6 +97,9 @@ define([
         browserAction.setTitle(title);
         browserAction.setIcon(icon);
         persistent.set('enableSelection', !enableSelection);
+        //messageSender.feedbackSelectionEnabled({
+        //    enabled: !enableSelection
+        //});
     }
 
 

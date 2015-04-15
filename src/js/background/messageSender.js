@@ -9,6 +9,7 @@ define([
         'showWidget',
         'showLoading',
         'showResult',
-        'showOtherResult'
+        'showOtherResult',
+        'feedbackSelectionEnabled'
     ], true);
 });

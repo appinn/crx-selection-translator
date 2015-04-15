@@ -6,20 +6,14 @@
     // 太担心命名冲突的问题；同时，content 页面的脚本只能配置在 manifest 文件中，不能
     // 通过 requireJs 等方式进行模块化，只能通过 命名空间的方式进行模块化。
 
+    var messageSender = root.messageSender;
+
     // Setup
     // ------
 
-    document.addEventListener('DOMContentLoaded', onLoaded, false);
     document.addEventListener('mouseup', onMouseUp, false);
     document.addEventListener('mousedown', onMouseDown, false);
-
-    var widget;
-    var messageSender = root.messageSender;
-
-    function onLoaded() {
-        // TODO: 是否启用划词检查
-        install();
-    }
+    messageSender.checkEnabledSelection(); // 检查是否开始划词翻译
 
     function onMouseUp(event) {
         // 鼠标左键才触发翻译
@@ -34,15 +28,15 @@
                 return;
             }
 
-            install();
+            Widget.install();
 
-            widget.offset(event.pageX, event.pageY);
-            messageSender.checkSelection({selectedText: selectedText});
+            root.widget.offset(event.pageX, event.pageY);
+            messageSender.checkSelectedText({selectedText: selectedText});
         }, 10);
     }
 
     function onMouseDown() {
-        widget && widget.hide();
+        root.widget && root.widget.hide();
     }
 
 
@@ -52,14 +46,6 @@
     // 获取选中的文字
     function getSelectionText() {
         return getSelection().toString().trim();
-    }
-
-    function install() {
-        if (!widget) {
-            var Widget = root.Widget;
-            widget = new Widget();
-            root.widget = widget;
-        }
     }
 
 })(window);

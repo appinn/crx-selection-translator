@@ -8,6 +8,12 @@ function Widget() {
     return that.install();
 }
 
+Widget.install = function () {
+    if (!window.widget) {
+        window.widget = new Widget();
+    }
+};
+
 Widget.prototype.install = function () {
     var that = this;
     // 页面加载之后就将 iframe 放到与 body 平级的位置，
@@ -16,6 +22,17 @@ Widget.prototype.install = function () {
     document.documentElement.appendChild(that.iframe);
     that.installed = true;
     that.install = function () {};
+    return that;
+};
+
+Widget.prototype.unInstall = function () {
+    var that = this;
+    var iframe = that.iframe;
+
+    iframe.parentNode.removeChild(iframe);
+
+    that.installed = false;
+    that.unInstall = function () {};
     return that;
 };
 
