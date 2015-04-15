@@ -1,6 +1,11 @@
 common-dev:
   files:
     <%= dev %>/js/lib/handlebars.runtime.amd.min.js: <%= bower %>/handlebars/handlebars.runtime.amd.min.js
+    <%= dev %>/js/lib/jquery.js : <%= bower %>/jquery/dist/jquery.js
+    <%= dev %>/js/lib/jquery.min.js : <%= bower %>/jquery/dist/jquery.min.js
+    <%= dev %>/js/lib/jquery.min.map : <%= bower %>/jquery/dist/jquery.min.map
+    <%= dev %>/js/lib/require.js: <%= bower %>/requirejs/require.js
+    <%= dev %>/js/lib/fetch.js: <%= bower %>/fetch/fetch.js
 
 manifest-dev:
   files:

@@ -1,6 +1,6 @@
 dev:
   - clean:dev
-  - uglify:lib-dev
+  #- uglify:lib-dev
   - copy:common-dev
   - copy:manifest-dev
   - copy:images-dev

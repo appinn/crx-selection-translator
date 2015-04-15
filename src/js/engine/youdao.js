@@ -27,6 +27,7 @@ define([
             q: ''
         },
 
+        ttsURI: 'http://tts.youdao.com/fanyivoice?keyfrom=fanyi%2Eweb%2Eindex&le={{lang}}&word={{query}}',
         resultURI: 'http://fanyi.youdao.com/translate?i={{query}}'
     };
 
@@ -43,6 +44,7 @@ define([
         id: 'youdao',
         name: '有道翻译',
         url: 'http://fanyi.youdao.com/',
+
 
         translate: function (query) {
             var queryText = query.text;
@@ -91,6 +93,12 @@ define([
                 result.resultURI = config.resultURI.replace('{{query}}', queryText);
 
                 return result;
+            });
+        },
+
+        speak: function (text, lang) {
+            return new Promise(function (resolve, reject) {
+
             });
         }
     };

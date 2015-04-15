@@ -117,6 +117,16 @@ define([
 
                 return result;
             });
+        },
+
+        detectLanguage: function (text) {
+            $.ajax({
+                url: 'http://fanyi.baidu.com/langdetect',
+                type: 'POST',
+                data: 'query=' + text.slice(0, 73)
+            }).then(function (response) {
+                return 0 === response.error ? response.lan : false;
+            });
         }
     };
 

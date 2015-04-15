@@ -9,6 +9,7 @@ define([
 ) {
     'use strict';
 
+    var audio = document.createElement('audio');
     var engines = {};
     Array.prototype.slice.call(arguments, 1).forEach(function (engine) {
         engine && engine.id && (engines[engine.id] = engine);
@@ -43,7 +44,9 @@ define([
                 }
             }
             return result;
-        }
+        },
+
+        speak: function () {}
     };
     return Object.freeze(translator);
 });
