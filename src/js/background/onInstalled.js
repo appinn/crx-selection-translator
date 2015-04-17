@@ -5,9 +5,9 @@ define([
     persistent,
     defaultSettings
 ) {
-    persistent.clear();
-    persistent.set(defaultSettings);
-    persistent._print();
+    //persistent.clear();
+    //persistent.set(defaultSettings);
+    //persistent._print();
 
     chrome.runtime.onInstalled.addListener(function (details) {
         'use strict';
