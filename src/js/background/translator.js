@@ -1,6 +1,6 @@
 define([
     'common/storedSettings',
-    'engine/baidu',
+    //'engine/baidu',
     'engine/youdao',
     'engine/google-en',
     'engine/google-cn'

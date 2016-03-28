@@ -136,7 +136,8 @@
             return new Promise(function (resolve, reject) {
                 function cb(response) {
                     var error = chrome.runtime.lastError;
-                    error ? reject(error) : resolve(response);
+                    //error ? reject(error) : resolve(response);
+                    resolve(response);
                 }
 
                 hasExtensionId

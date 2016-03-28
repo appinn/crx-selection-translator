@@ -4,7 +4,7 @@ define([
     'template/translateLoading',
     'template/translateResult',
     'template/youdao',
-    'template/baidu',
+    //'template/baidu',
     'template/google-cn'
 ], function (
     $,
@@ -12,14 +12,14 @@ define([
     loadingTemplate,
     translateResult,
     youdaoTemplate,
-    baiduTemplate,
+    //baiduTemplate,
     googleCNTemplate
 ) {
 
     var hasOwn = Object.prototype.hasOwnProperty;
     var engineTemplates = {
         'youdao': youdaoTemplate,
-        'baidu': baiduTemplate,
+        //'baidu': baiduTemplate,
         'googleCN': googleCNTemplate
     };
 
